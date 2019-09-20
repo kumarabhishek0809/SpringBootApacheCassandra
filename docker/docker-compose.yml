@@ -6,7 +6,7 @@ services:
   DC1N1:
     # Cassandra image for Cassandra version 3.1.0. This is pulled
     # from the docker store.
-    image: cassandra:3.10
+    image: cassandra:3.11.4
     # In case this is the first time starting up cassandra we need to ensure
     # that all nodes do not start up at the same time. Cassandra has a
     # 2 minute rule i.e. 2 minutes between each node boot up. Booting up
@@ -29,12 +29,12 @@ services:
       - CASSANDRA_CLUSTER_NAME=dev_cluster
       - CASSANDRA_SEEDS=DC1N1
     # Exposing ports for inter cluste communication
-    expose:
-      - 7000
-      - 7001
-      - 7199
-      - 9042
-      - 9160
+    ports :
+      - "7000-7000"
+      - "7001-7001"
+      - "7199-7199"
+      - "9042-9042"
+      - "9160-9160"
     # Cassandra ulimt recommended settings
     ulimits:
       memlock: -1
@@ -45,7 +45,7 @@ services:
   DC1N2:
     # Cassandra image for Cassandra version 3.1.0. This is pulled
     # from the docker store.
-    image: cassandra:3.10
+    image: cassandra:3.11.4
     # In case this is the first time starting up cassandra we need to ensure
     # that all nodes do not start up at the same time. Cassandra has a
     # 2 minute rule i.e. 2 minutes between each node boot up. Booting up
@@ -72,7 +72,7 @@ services:
       - DC1N1
     # Exposing ports for inter cluste communication. Note this is already
     # done by the docker file. Just being explict about it.
-    expose:
+    ports :
       # Intra-node communication
       - 7000
       # TLS intra-node communication
@@ -92,7 +92,7 @@ services:
   # This is configuration for our non seed cassandra node. The node is call
   # DC1N3 .i.e Node 3 in Data center 1.
   DC1N3:
-    image: cassandra:3.10
+    image: cassandra:3.11.4
     # In case this is the first time starting up cassandra we need to ensure
     # that all nodes do not start up at the same time. Cassandra has a
     # 2 minute rule i.e. 2 minutes between each node boot up. Booting up
@@ -119,7 +119,7 @@ services:
       - DC1N1
     # Exposing ports for inter cluste communication. Note this is already
     # done by the docker file. Just being explict about it.
-    expose:
+    ports :
       # Intra-node communication
       - 7000
       # TLS intra-node communication
@@ -135,17 +135,17 @@ services:
       memlock: -1
       nproc: 32768
       nofile: 100000
-  # A web based interface for managing your docker containers.
-  portainer:
-    image: portainer/portainer
-    networks:
-      - dc1ring
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./portainer-data:/data
-    # Enable you to access potainers web interface from your host machine
-    # using http://localhost:10001
-    ports:
-      - "10001:9000"
+#  # A web based interface for managing your docker containers.
+#  portainer:
+#    image: portainer/portainer
+#    networks:
+#      - dc1ring
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock
+#      - ./portainer-data:/data
+#    # Enable you to access potainers web interface from your host machine
+#    # using http://localhost:10001
+#    ports:
+#      - "10001:9000"
 networks:
   dc1ring:

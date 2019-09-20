@@ -31,4 +31,7 @@ out/
 ### VS Code ###
 .vscode/
 
-**/src/main/resources/n1data/**
+/src/main/resources/*data/
+/docker
+/target
+/.mvn
